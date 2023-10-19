@@ -10,3 +10,5 @@ app.get('/', (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`L'API est en cours d'exécution sur le port ${port}`);
 });
+
+export default app;
