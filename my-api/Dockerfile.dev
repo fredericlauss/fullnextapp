@@ -1,0 +1,17 @@
+FROM node:18
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm install
+
+# Bundle app source
+COPY dist/ ./  
+# Copiez les fichiers depuis le répertoire "dist" de votre application
+# Si le fichier "app.ts" se trouve dans "dist", cela devrait fonctionner
+
+EXPOSE 8000
+CMD [ "node", "app.js" ]

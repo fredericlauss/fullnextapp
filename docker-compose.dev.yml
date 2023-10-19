@@ -25,7 +25,20 @@ services:
       - my_network
 
   # Add more containers below (nginx, postgres, etc.)
+  my-api:
+      container_name: my-api
+      build:
+        context: ./my-api
+        dockerfile: Dockerfile.dev
 
+      # Set envrionment variables based on the .env file
+      env_file:
+        - .env
+      restart: always
+      ports:
+        - 8000:8000
+      networks:
+        - my_network
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
 networks:
