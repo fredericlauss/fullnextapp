@@ -14,3 +14,26 @@ describe('GET /', () => {
   });
 });
 
+describe("POST /items", () => {
+
+  describe("il y a toutes les infos", () => {
+      // enregistrment en bdd
+      // reponse avec id de l'item
+      // code 200
+      test("should have status code 200", async () => {
+          const response = await supertest(app).post("/items").send({
+              itemname: "itemname",
+              moreinfos: "moreinfos"
+          })
+          expect(response.statusCode).toBe(200)
+      })
+
+      // repond en json
+
+  })
+
+  describe("il manque des infos", () => {
+      // doit répondre en 400
+  })
+})
+

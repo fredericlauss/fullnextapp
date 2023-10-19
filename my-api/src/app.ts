@@ -7,6 +7,10 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Bienvenue sur votre API !');
 });
 
+app.post('/items', (req: Request, res: Response) => {
+  res.sendStatus(200)
+})
+
 app.listen(port, () => {
   console.log(`L'API est en cours d'exécution sur le port ${port}`);
 });
