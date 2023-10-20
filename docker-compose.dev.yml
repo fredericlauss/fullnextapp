@@ -29,7 +29,7 @@ services:
       container_name: my-api
       build:
         context: ./my-api
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile
 
       # Set envrionment variables based on the .env file
       env_file:
