@@ -1,14 +1,23 @@
 
 import supertest from 'supertest'; 
-import app from '../src/app';
+import {app, server} from '../app';
 
 describe("POST /items", () => {
 
   describe("il y a toutes les infos", () => {
+    beforeAll(done => {
+      done()
+    })
+    afterAll(done => {
+      server.close();
+      done();
+    })
       // enregistrment en bdd
+
+
       // reponse avec id de l'item
       test("should contain a itemId in the response", async () => {
-        const response = await supertest(app).post("/items").send({ 
+        const response = await supertest(app).post("/items").send({
           itemname: "itemname",
           moreinfos: "moreinfos"
         })

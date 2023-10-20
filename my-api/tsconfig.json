@@ -1,11 +1,34 @@
 {
+  "include": ["./src"],
+  "exclude": [
+    "node_modules", 
+    "dist",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ],
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
+    "baseUrl": "./src",
+    "rootDir": "./src",
     "outDir": "./dist",
+
+    "lib": ["esnext"],
+    "types": ["node", "jest"],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "inlineSourceMap": false,
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "traceResolution": false,
+
     "strict": true,
-    "esModuleInterop": true
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"], // Ajoutez les fichiers de test dans "include"
-  "exclude": ["node_modules"]
+  "compileOnSave": false
 }

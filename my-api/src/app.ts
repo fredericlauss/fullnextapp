@@ -14,11 +14,11 @@ app.post('/items', (req: Request, res: Response) => {
     res.send(400)
     return
   }
-  res.send({itemId: 0})
+  res.send({itemId: 1})
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`L'API est en cours d'exécution sur le port ${port}`);
 });
 
-export default app;
+export {app, server};
