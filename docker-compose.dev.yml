@@ -36,9 +36,21 @@ services:
         - .env
       restart: always
       ports:
-        - 8000:8000
+        - 8080:8080
       networks:
         - my_network
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - my_network
+
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
 networks:

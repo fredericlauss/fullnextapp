@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 
 const app = express();
-const port = 8000;
+const port = 8080;
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Bienvenue sur votre API !');
@@ -14,7 +14,6 @@ app.post('/items', (req: Request, res: Response) => {
     res.send(400)
     return
   }
-
   res.send({itemId: 0})
 })
 

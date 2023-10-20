@@ -7,7 +7,7 @@ describe("POST /items", () => {
   describe("il y a toutes les infos", () => {
       // enregistrment en bdd
       // reponse avec id de l'item
-      test("should contain a userId in the response body", async () => {
+      test("should contain a itemId in the response", async () => {
         const response = await supertest(app).post("/items").send({ 
           itemname: "itemname",
           moreinfos: "moreinfos"
@@ -25,7 +25,7 @@ describe("POST /items", () => {
       })
 
       // repond en json
-      test("should specify json as the content type in the http header", async () => {
+      test("should respond json", async () => {
         const response = await supertest(app).post("/items").send({ 
           itemname: "itemname",
           moreinfos: "moreinfos" 
@@ -34,7 +34,7 @@ describe("POST /items", () => {
       })
   })
 
-  describe("il manque des infos", () => {
+  describe("missing infos", () => {
       // doit répondre en 400
       describe("when itemname is missing", () => {
         test("should return a 400 status code", async () => {
