@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
-const dbURL = 'mongodb://localhost:27017/votre-base-de-donnees';
+const dbURL = process.env.MONGODB_URI;
 
-mongoose.connect(dbURL)
+if(dbURL) {
+  mongoose.connect(dbURL)
   .then(() => {
     console.log('Connecté à la base de données MongoDB');
   })
@@ -17,5 +18,7 @@ mongoose.connection.on('error', (err) => {
 mongoose.connection.once('open', () => {
   console.log('Connexion à la base de données établie');
 });
+}
+
 
 export default mongoose.connection;

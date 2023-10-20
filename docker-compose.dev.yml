@@ -43,6 +43,9 @@ services:
   mongo:
     container_name: mongo
     image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=userAdmin
+      - MONGO_INITDB_ROOT_PASSWORD=userPassword
     restart: always
     volumes:
       - ./data:/data/db

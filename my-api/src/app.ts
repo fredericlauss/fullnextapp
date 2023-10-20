@@ -1,7 +1,10 @@
 import express, { Request, Response } from 'express';
+import dbConnection from './db';
 
 const app = express();
 const port = 8080;
+
+dbConnection
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Bienvenue sur votre API !');
