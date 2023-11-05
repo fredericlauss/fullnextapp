@@ -2,8 +2,18 @@
 import supertest from 'supertest'; 
 import {app, server} from '../app';
 
-describe("POST /items", () => {
+describe('GET /', () => {
+  it('should return 200 OK', async () => {
+    const response = await supertest(app).get('/');
+    expect(response.status).toBe(200);
+  });
+  it('should return "Bienvenue sur votre API!"', async () => {
+    const response = await supertest(app).get('/'); 
+    expect(response.text).toBe('Bienvenue sur votre API !');
+  });
+});
 
+describe("POST /items", () => {
   describe("il y a toutes les infos", () => {
     beforeAll(done => {
       done()
@@ -47,10 +57,15 @@ describe("POST /items", () => {
       // doit répondre en 400
       describe("when itemname is missing", () => {
         test("should return a 400 status code", async () => {
-          const response = await supertest(app).post("/items").send({ moreinfos: "moreinfos" })
-          expect(response.statusCode).toBe(400)
+          const bodies = [
+            { itemname: "itemname" },
+            { moreinfos: "moreinfos" }
+          ]
+          for (const body of bodies) {
+            const response = await supertest(app).post("/items").send(body)
+            expect(response.statusCode).toBe(400)
+          }
         })
       })
   })
 })
-

@@ -17,6 +17,10 @@ app.post('/items', (req: Request, res: Response) => {
     res.send(400)
     return
   }
+  if (!moreinfos) {
+    res.send(400)
+    return
+  }
   res.send({itemId: 1})
 })
 
