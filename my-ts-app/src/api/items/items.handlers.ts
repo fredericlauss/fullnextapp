@@ -6,8 +6,7 @@ import { ObjectId } from "mongodb";
 
 export async function findAll(req: Request, res: Response<ItemWithId[]>, next: NextFunction) {
     try {
-        const result = await Items.find();
-        const items = await result.toArray();
+        const items = await Items.find().toArray();
         res.json(items);
     } catch (error) {
         next(error)
@@ -38,6 +37,40 @@ export async function findOne(req: Request<ParamsWithId, ItemWithId, []>, res: R
             throw new Error(`Item with id "${req.params.id}" not found`)
         }
         res.json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function updateOne(req: Request<ParamsWithId, ItemWithId, Item>, res: Response<ItemWithId>, next: NextFunction) {
+    try {
+        const result = await Items.findOneAndUpdate({
+            _id: new ObjectId(req.params.id),
+        },{
+            $set: req.body,
+        }, {
+            returnDocument: 'after',
+        });
+        if (!result) {
+            res.status(404);
+            throw new Error(`Item with id "${req.params.id}" not found`);
+        }
+        res.json(result);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export  async function deleteOne(req: Request<ParamsWithId, {}, {}>, res: Response<{}>, next: NextFunction) {
+    try {
+        const result = await Items.findOneAndDelete({
+            _id: new ObjectId(req.params.id),
+        });
+        if (!result) {
+            res.status(404);
+            throw new Error(`Item with id "${req.params.id}" not found`)
+        } 
+        res.status(204).end();
     } catch (error) {
         next(error);
     }

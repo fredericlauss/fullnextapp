@@ -89,3 +89,77 @@ describe('POST /api/v1/items', () => {
     },
   );
   });
+
+
+  describe('PUT /api/v1/items/:id', () => {
+    it('responds with the right item', async () =>
+    request(app)
+      .put(`/api/v1/items/${id}`)
+      .set('Accept', 'application/json')
+      .send({
+        name: 'new name',
+      })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then ((response) => {
+        expect(response.body).toHaveProperty('_id');
+        expect(response.body._id).toBe(id);
+        expect(response.body).toHaveProperty('name');
+        expect(response.body.name).toBe('new name');
+      }),
+    );
+    it('responds with invalid Id error', (done) => {
+      request(app)
+        .put('/api/v1/items/zeeazeazeaze')
+        .set('Accept', 'application/json')
+        .send({
+          name: 'new name',
+        })
+        .expect('Content-Type', /json/)
+        .expect(422, done);
+      },
+    );
+    it('responds with not found error', (done) => {
+      request(app)
+        .put('/api/v1/items/6547b4673191de74c9df99ae')
+        .set('Accept', 'application/json')
+        .send({
+          name: 'new name',
+        })
+        .expect('Content-Type', /json/)
+        .expect(404, done);
+      },
+    );
+  });
+
+  describe('DELETE /api/v1/items/:id', () => {
+    it('responds with 204', (done) => {
+    request(app)
+      .delete(`/api/v1/items/${id}`)
+      .set('Accept', 'application/json')
+      .expect(204, done)
+  });
+    it('responds with invalid Id error', (done) => {
+      request(app)
+        .delete('/api/v1/items/zeeazeazeaze')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(422, done);
+      },
+    );
+    it('responds with not found error', (done) => {
+      request(app)
+        .delete('/api/v1/items/6547b4673191de74c9df99ae')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(404, done);
+      },
+    );
+    it('responds with not found error', (done) => {
+      request(app)
+        .get(`/api/v1/items/${id}`)
+        .set('Accept', 'application/json')
+        .expect(404, done);
+      },
+    );
+  });
