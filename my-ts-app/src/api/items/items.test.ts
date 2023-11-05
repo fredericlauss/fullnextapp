@@ -24,3 +24,35 @@ describe('GET /api/v1/items', () => {
       }),
   );
 });
+
+describe('POST /api/v1/items', () => {
+    it('responds with a error if the item is not valid', async () =>
+      request(app)
+        .post('/api/v1/items')
+        .set('Accept', 'application/json')
+        .send({
+            name: '',
+        })
+        .expect('Content-Type', /json/)
+        .expect(422)
+        .then ((response) => {
+          expect(response.body).toHaveProperty('message');
+        }),
+    );
+
+    it('responds with inserted object', async () =>
+    request(app)
+      .post('/api/v1/items')
+      .set('Accept', 'application/json')
+      .send({
+          name: 'name of the item',
+      })
+      .expect('Content-Type', /json/)
+      .expect(201)
+      .then ((response) => {
+        expect(response.body).toHaveProperty('_id');
+        expect(response.body).toHaveProperty('name');
+        expect(response.body.name).toBe('name of the item');
+      }),
+  );
+  });

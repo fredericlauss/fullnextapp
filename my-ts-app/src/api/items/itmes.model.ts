@@ -2,7 +2,7 @@ import * as z from 'zod';
 import { db } from '../../db';
 import { WithId } from 'mongodb';
 
-const Item = z.object({
+export const Item = z.object({
     name: z.string().min(1),
 });
 

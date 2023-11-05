@@ -1,12 +1,9 @@
-import { Router, Request, Response } from "express";
-import { ItemWithId, Items } from "./itmes.model";
+import { Router } from "express";
+import * as ItemsHandlers from './items.handlers'
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response<ItemWithId[]>) => {
-    const result = await Items.find();
-    const items = await result.toArray();
-    res.json(items);
-});
+router.get('/', ItemsHandlers.findAll);
+router.post('/', ItemsHandlers.creatOne);
 
 export default router;
