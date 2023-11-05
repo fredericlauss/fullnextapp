@@ -4,5 +4,5 @@ const {
     MONGODB_URI = 'localhost/todo-api',
 } = process.env;
 
-export const client = new MongoClient("mongodb://userAdmin:userPassword@localhost:27017");
+export const client = new MongoClient(MONGODB_URI);
 export const db = client.db();
