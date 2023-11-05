@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Item, ItemWithId, Items } from "./itmes.model";
 import { ZodError } from "zod";
+import { ParamsWithId } from "../../interfaces/ParamsWithId";
+import { ObjectId } from "mongodb";
 
 export async function findAll(req: Request, res: Response<ItemWithId[]>, next: NextFunction) {
     try {
@@ -14,18 +16,29 @@ export async function findAll(req: Request, res: Response<ItemWithId[]>, next: N
 
 export async function creatOne(req: Request<{}, ItemWithId, Item>, res: Response<ItemWithId>, next: NextFunction) {
     try {
-        const validateResult = await Item.parseAsync(req.body);
-        const insertResult = await Items.insertOne(validateResult);
+        const insertResult = await Items.insertOne(req.body);
         if (!insertResult.acknowledged) throw new Error('Error inserting item');
         res.status(201);
         res.json({
             _id: insertResult.insertedId,
-            ...validateResult,
+            ...req.body,
     });
     } catch (error) {
-        if (error instanceof ZodError) {
-            res.status(422);
-        }
         next(error)
+    }
+}
+
+export async function findOne(req: Request<ParamsWithId, ItemWithId, []>, res: Response<ItemWithId>, next: NextFunction) {
+    try {
+        const result = await Items.findOne({
+            _id: new ObjectId(req.params.id),
+        });
+        if (!result) {
+            res.status(404);
+            throw new Error(`Item with id "${req.params.id}" not found`)
+        }
+        res.json(result);
+    } catch (error) {
+        next(error);
     }
 }
