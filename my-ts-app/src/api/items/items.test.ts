@@ -1,7 +1,15 @@
 import request from 'supertest';
 
 import app from '../../app';
-import { response } from 'express';
+import { Items } from './itmes.model'
+
+beforeAll(async () => {
+    try {
+        await Items.drop
+    } catch (error) {
+
+    }
+})
 
 describe('GET /api/v1/items', () => {
   it('responds with a array of items', async () =>
@@ -12,8 +20,7 @@ describe('GET /api/v1/items', () => {
       .expect(200)
       .then ((response) => {
         expect(response.body).toHaveProperty('length');
-        expect(response.body.length).toBe(1);
-        expect(response.body[0]).toHaveProperty('name');
+        expect(response.body.length).toBe(0);
       }),
   );
 });
