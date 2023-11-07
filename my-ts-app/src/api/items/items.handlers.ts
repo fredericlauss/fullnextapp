@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Item, ItemWithId, Items } from "./itmes.model";
-import { ZodError } from "zod";
+import { Item, ItemWithId, Items } from "./items.model";
 import { ParamsWithId } from "../../interfaces/ParamsWithId";
 import { ObjectId } from "mongodb";
 

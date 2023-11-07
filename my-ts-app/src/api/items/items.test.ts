@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 import app from '../../app';
-import { Items } from './itmes.model'
+import { Items } from './items.model'
 
 beforeAll(async () => {
     try {
