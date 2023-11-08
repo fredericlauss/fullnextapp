@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as ItemsHandlers from './items.handlers'
-import { Item } from "./itmes.zod";
+import { Item } from "./items.model";
 import { validateResquest } from "../../middlewares";
 import { ParamsWithId } from "../../interfaces/ParamsWithId";
 

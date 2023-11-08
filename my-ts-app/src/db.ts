@@ -1,8 +1,16 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
 const {
     MONGODB_URI = 'localhost/todo-api',
 } = process.env;
 
-export const client = new MongoClient(MONGODB_URI);
-export const db = client.db();
+async function connect() {
+    try {
+        await mongoose.connect("mongodb://userAdmin:userPassword@127.0.0.1:27017");
+        console.log("DB connected");
+    } catch (error) {
+        console.log("Could not connect to DB")
+    }    
+}
+
+export default connect;

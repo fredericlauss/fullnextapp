@@ -5,7 +5,7 @@ import { ObjectId } from "mongodb";
 
 export async function findAll(req: Request, res: Response<ItemWithId[]>, next: NextFunction) {
     try {
-        const items = await Items.find().toArray();
+        const items = await Items.find().exec();
         res.json(items);
     } catch (error) {
         next(error)
@@ -14,13 +14,9 @@ export async function findAll(req: Request, res: Response<ItemWithId[]>, next: N
 
 export async function creatOne(req: Request<{}, ItemWithId, Item>, res: Response<ItemWithId>, next: NextFunction) {
     try {
-        const insertResult = await Items.insertOne(req.body);
-        if (!insertResult.acknowledged) throw new Error('Error inserting item');
-        res.status(201);
-        res.json({
-            _id: insertResult.insertedId,
-            ...req.body,
-    });
+        const newItem = new Items(req.body);
+        const savedItem = await newItem.save();
+        res.status(201).json(savedItem);
     } catch (error) {
         next(error)
     }
