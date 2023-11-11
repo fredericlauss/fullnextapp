@@ -1,12 +1,16 @@
 import nodemailer from 'nodemailer';
 
+const {
+  MAIL_PASS = ' ',
+} = process.env;
+
+
 export async function sendEmail(to: string, subject: string, text: string): Promise<void> {
-    console.log("on passe a node mailer")
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: 'flausson@normandiewebschool.fr',
-      pass: 'kwhzdxhkhuyqeefw',
+      pass: MAIL_PASS,
     },
     tls: {
         rejectUnauthorized: false,

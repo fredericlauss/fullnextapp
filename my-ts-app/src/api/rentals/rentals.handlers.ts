@@ -92,7 +92,6 @@ export  async function deleteOne(req: Request<ParamsWithId, {}, {}>, res: Respon
 
 export  async function reminder(req: Request<ParamsWithId, {}, {}>, res: Response<{}>, next: NextFunction) {
     try {
-        console.log("on est dans le handler")
         const rentalId = req.params.id;
         const rental = await Rentals.findById(rentalId);
         const item = await Items.findById(rental?.itemId);
@@ -106,7 +105,6 @@ export  async function reminder(req: Request<ParamsWithId, {}, {}>, res: Respons
         res.status(404);
         throw new Error(`Item with id "${rental?.itemId}" not found`);
       }
-      console.log("l'item et le rental ils sont la")
       const emailSubject = 'Rappel pour votre item';
       const emailText = `N'oubliez pas votre item "${item.name}" le ${rental.endDate}`;
 
