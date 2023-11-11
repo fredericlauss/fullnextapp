@@ -28,6 +28,10 @@ validateResquest({
 }), 
 RentalsHandlers.deleteOne);
 
-// router.post('/:id/send-reminder', ItemsHandlers.reminder);
+router.post('/:id/send-reminder',
+validateResquest({
+    params: ParamsWithId,
+}),
+RentalsHandlers.reminder);
 
 export default router;

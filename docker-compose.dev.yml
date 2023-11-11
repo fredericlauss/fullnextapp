@@ -1,28 +1,28 @@
 version: '3'
 
 services:
-  my-app:
-    container_name: my-app
-    build:
-      context: ./my-app
-      dockerfile: Dockerfile.prod
+  # my-app:
+  #   container_name: my-app
+  #   build:
+  #     context: ./my-app
+  #     dockerfile: Dockerfile.prod
 
-    # Set environment variables directly in the docker-compose file
-    environment:
-      ENV_VARIABLE: ${ENV_VARIABLE}
-      NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+  #   # Set environment variables directly in the docker-compose file
+  #   environment:
+  #     ENV_VARIABLE: ${ENV_VARIABLE}
+  #     NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
 
-    # Set envrionment variables based on the .env file
-    env_file:
-      - .env
-    volumes:
-      - ./my-app/src:/app/src
-      - ./my-app/public:/app/public
-    restart: always
-    ports:
-      - 3000:3000
-    networks:
-      - my_network
+  #   # Set envrionment variables based on the .env file
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./my-app/src:/app/src
+  #     - ./my-app/public:/app/public
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - my_network
 
   # Add more containers below (nginx, postgres, etc.)
   my-api:
