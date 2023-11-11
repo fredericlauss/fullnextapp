@@ -21,7 +21,12 @@ validateResquest({
 RentalsHandlers.creatOne);
 
 // router.put('/:id', ItemsHandlers.updateOne);
-// router.get('/:id', ItemsHandlers.deleteOne);
+
+router.delete('/:id',
+validateResquest({
+    params: ParamsWithId,
+}), 
+RentalsHandlers.deleteOne);
 
 // router.post('/:id/send-reminder', ItemsHandlers.reminder);
 

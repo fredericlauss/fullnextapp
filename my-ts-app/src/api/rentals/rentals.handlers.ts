@@ -61,3 +61,28 @@ export async function findOne(req: Request<ParamsWithId, RentalWithId, []>, res:
         next(error);
     }
 }
+
+export  async function deleteOne(req: Request<ParamsWithId, {}, {}>, res: Response<{}>, next: NextFunction) {
+    try {
+        const rentalId = new ObjectId(req.params.id);
+        const rentalToDelete = await Rentals.findOne({ _id: rentalId });
+
+        if (!rentalToDelete) {
+            res.status(404);
+            throw new Error(`Rental with id "${req.params.id}" not found`);
+        }
+
+        await Items.findByIdAndUpdate(rentalToDelete.itemId, { isRented: false, rentalId: null });
+
+        const result = await Rentals.findOneAndDelete({ _id: rentalId });
+
+        if (!result) {
+            res.status(404);
+            throw new Error(`Rental with id "${req.params.id}" not found`);
+        }
+
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+}

@@ -26,9 +26,9 @@ describe('GET /api/v1/rentals', () => {
   });
 
   let id = '';
+  let itemrentedid = '';
 describe('POST /api/v1/rentals', () => {
     it('responds with a 201 status and the created rental', async () => {
-      // Create an item to use in the rental
       const itemResponse = await request(app)
         .post('/api/v1/items')
         .set('Accept', 'application/json')
@@ -37,7 +37,7 @@ describe('POST /api/v1/rentals', () => {
           isRented: false,
           rentalId: null,
         });
-  
+      itemrentedid = itemResponse.body._id;
       const itemId = itemResponse.body._id;
       const response = await request(app)
         .post('/api/v1/rentals')
@@ -56,7 +56,6 @@ describe('POST /api/v1/rentals', () => {
       expect(response.body.startDate).toBe('2023-12-01T00:00:00.000Z');
       expect(response.body.endDate).toBe('2023-12-10T00:00:00.000Z');
   
-      // Check if the item is marked as rented and has the rentalId
       const updatedItemResponse = await request(app).get(`/api/v1/items/${itemId}`).set('Accept', 'application/json');
       expect(updatedItemResponse.body.isRented).toBe(true);
       expect(updatedItemResponse.body.rentalId).toBe(response.body._id);
@@ -126,7 +125,7 @@ describe('POST /api/v1/rentals', () => {
   
   });
 
-  describe('GET /api/v1/rentals/:id', () => {
+describe('GET /api/v1/rentals/:id', () => {
     it('responds with the right item', async () =>
       request(app)
         .get(`/api/v1/rentals/${id}`)
@@ -157,3 +156,34 @@ describe('POST /api/v1/rentals', () => {
     },
   );
   });
+
+describe('DELETE /api/v1/rentals/:id', () => {
+  it('responds with a 404 status if rental does not exist', async () => {
+      const response = await request(app)
+          .delete('/api/v1/rentals/6547b4673191de74c9df99ae')
+          .set('Accept', 'application/json')
+          .expect(404);
+
+      expect(response.body).toHaveProperty('message');
+      expect(response.body.message).toBe('Rental with id "6547b4673191de74c9df99ae" not found');
+  });
+
+  it('responds with a 422 status if invalid rental id', async () => {
+      const response = await request(app)
+          .delete('/api/v1/rentals/zeeazeazeaze')
+          .set('Accept', 'application/json')
+          .expect(422);
+  });
+  it('responds with a 204 status and deletes the rental', async () => {
+        const response = await request(app)
+            .delete(`/api/v1/rentals/${id}`)
+            .set('Accept', 'application/json')
+            .expect(204);
+        const updatedItemResponse = await request(app)
+            .get(`/api/v1/items/${itemrentedid}`)
+            .set('Accept', 'application/json');
+            expect(updatedItemResponse.body.isRented).toBe(false);
+            expect(updatedItemResponse.body.rentalId).toBe(null);
+  });
+
+});
