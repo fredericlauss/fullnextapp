@@ -1,19 +1,14 @@
-import mongoose from 'mongoose';
-
 import request from 'supertest';
 import app from '../../app';
+import { connect, disconnect } from '../__helper__/mongodb.memory.test.helpers'
+
 
 beforeAll(async () => {
-  try {
-    await mongoose.connect("mongodb://userAdmin:userPassword@127.0.0.1:27017");
-    console.log("DB connected");
-} catch (error) {
-    console.log("Could not connect to DB")
-}  
+  connect();
 });
 
 afterAll(async () => {
-  await mongoose.disconnect();
+  disconnect();
 });
 
 describe('GET /api/v1/items', () => {
@@ -25,6 +20,7 @@ describe('GET /api/v1/items', () => {
       .expect(200)
       .then ((response) => {
         expect(response.body).toHaveProperty('length');
+        expect(response.body.length).toBe(0);
       }),
   );
 });
