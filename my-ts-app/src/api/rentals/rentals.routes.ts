@@ -1,38 +1,33 @@
 import { Router } from "express";
-import * as ItemsHandlers from './items.handlers'
-import { Item } from "./items.model";
+import * as RentalsHandlers from './rentals.handlers';
+import { Rental } from "./rentals.model";
 import { validateResquest } from "../../middlewares";
 import { ParamsWithId } from "../../interfaces/ParamsWithId";
 
 const router = Router();
 
-
-
-router.get('/', ItemsHandlers.findAll);
+router.get('/', RentalsHandlers.findAll);
 
 router.get('/:id',
 validateResquest({
     params: ParamsWithId,
 }), 
-ItemsHandlers.findOne);
+RentalsHandlers.findOne);
 
 router.post('/', 
 validateResquest({
-    body: Item,
+    body: Rental,
 }), 
-ItemsHandlers.creatOne);
+RentalsHandlers.creatOne);
 
-router.put('/:id',
-validateResquest({
-    params: ParamsWithId,
-    body: Item,
-}), 
-ItemsHandlers.updateOne);
+// router.put('/:id', ItemsHandlers.updateOne);
 
 router.delete('/:id',
 validateResquest({
     params: ParamsWithId,
 }), 
-ItemsHandlers.deleteOne);
+RentalsHandlers.deleteOne);
+
+// router.post('/:id/send-reminder', ItemsHandlers.reminder);
 
 export default router;
