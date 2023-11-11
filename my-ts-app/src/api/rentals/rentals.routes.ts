@@ -1,11 +1,20 @@
 import { Router } from "express";
-import * as ItemsHandlers from './rentals.handlers'
+import * as RentalsHandlers from './rentals.handlers';
+import { Rental } from "./rentals.model";
+import { validateResquest } from "../../middlewares";
 
 const router = Router();
 
-router.get('/', ItemsHandlers.findAll);
+router.get('/', RentalsHandlers.findAll);
+
 // router.get('/:id', ItemsHandlers.findOne);
-// router.post('/', ItemsHandlers.creatOne);
+
+router.post('/', 
+validateResquest({
+    body: Rental,
+}), 
+RentalsHandlers.creatOne);
+
 // router.put('/:id', ItemsHandlers.updateOne);
 // router.get('/:id', ItemsHandlers.deleteOne);
 

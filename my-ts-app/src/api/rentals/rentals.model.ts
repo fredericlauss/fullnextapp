@@ -1,12 +1,19 @@
 import * as z from 'zod';
 import mongoose from 'mongoose';
 import { WithId } from 'mongodb';
+import { ObjectId } from "mongodb";
 
 export const Rental = z.object({
-    itemId: z.string(),
+    itemId: z.string().min(1).refine((val) => {
+        try {
+            return new ObjectId(val);
+        } catch (error) {
+            return false;
+        }
+    }),
     studentEmail: z.string().email(),
-    startDate: z.date(),
-    endDate: z.date(),
+    startDate: z.string().datetime(),
+    endDate: z.string().datetime(),
 });
 
 export type Rental = z.infer<typeof Rental>;

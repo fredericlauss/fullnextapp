@@ -24,3 +24,103 @@ describe('GET /api/v1/rentals', () => {
         }),
     );
   });
+
+describe('POST /api/v1/rentals', () => {
+    it('responds with a 201 status and the created rental', async () => {
+      // Create an item to use in the rental
+      const itemResponse = await request(app)
+        .post('/api/v1/items')
+        .set('Accept', 'application/json')
+        .send({
+          name: 'Item for Rental',
+          isRented: false,
+          rentalId: null,
+        });
+  
+      const itemId = itemResponse.body._id;
+      const response = await request(app)
+        .post('/api/v1/rentals')
+        .set('Accept', 'application/json')
+        .send({
+          itemId,
+          studentEmail: 'test@example.com',
+          startDate: new Date('2023-12-01'),
+          endDate: new Date('2023-12-10'),
+        });
+  
+      expect(response.status).toBe(201);
+      expect(response.body).toHaveProperty('_id');
+      expect(response.body.itemId).toBe(itemId);
+      expect(response.body.studentEmail).toBe('test@example.com');
+      expect(response.body.startDate).toBe('2023-12-01T00:00:00.000Z');
+      expect(response.body.endDate).toBe('2023-12-10T00:00:00.000Z');
+  
+      // Check if the item is marked as rented and has the rentalId
+      const updatedItemResponse = await request(app).get(`/api/v1/items/${itemId}`).set('Accept', 'application/json');
+      expect(updatedItemResponse.body.isRented).toBe(true);
+      expect(updatedItemResponse.body.rentalId).toBe(response.body._id);
+    });
+
+    it('responds with a 422 not an item id', async () => {
+      const response = await request(app)
+        .post('/api/v1/rentals')
+        .set('Accept', 'application/json')
+        .send({
+          itemId: 'zeoiezfjezgjfezjlk',
+          studentEmail: 'test@example.com',
+          startDate: new Date('2023-12-01'),
+          endDate: new Date('2023-12-10'),
+        });
+  
+      expect(response.status).toBe(422);
+    });
+  
+    it('responds with a 404 status if item does not exist', async () => {
+      const response = await request(app)
+        .post('/api/v1/rentals')
+        .set('Accept', 'application/json')
+        .send({
+          itemId: '6547b4673191de74c9df99ae',
+          studentEmail: 'test@example.com',
+          startDate: new Date('2023-12-01'),
+          endDate: new Date('2023-12-10'),
+        });
+  
+      expect(response.status).toBe(404);
+      expect(response.body).toHaveProperty('message');
+      expect(response.body.message).toBe('Item with id \"6547b4673191de74c9df99ae\" not found');
+    });
+  
+    it('responds with a 400 status if item is already rented', async () => {
+      const itemResponse = await request(app)
+        .post('/api/v1/items')
+        .set('Accept', 'application/json')
+        .send({
+          name: 'Rented Item',
+          isRented: true,
+          rentalId: null,
+        });
+        const itemGoodResponse = await request(app)
+        .put(`/api/v1/items/${itemResponse.body._id}`)
+        .set('Accept', 'application/json')
+        .send({
+          name: 'Rented Item',
+          isRented: true,
+          rentalId: null,
+        })
+      const response = await request(app)
+        .post('/api/v1/rentals')
+        .set('Accept', 'application/json')
+        .send({
+          itemId: itemGoodResponse.body._id,
+          studentEmail: 'test@example.com',
+          startDate: new Date('2023-12-01'),
+          endDate: new Date('2023-12-10'),
+        });
+  
+      expect(response.status).toBe(400);
+      expect(response.body).toHaveProperty('message');
+      expect(response.body.message).toBe(`item with ID ${itemResponse.body._id} already rented`);
+    });
+  
+  });
