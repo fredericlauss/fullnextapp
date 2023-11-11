@@ -1,7 +1,9 @@
 import request from 'supertest';
 import app from '../../app';
 import { connect, disconnect } from '../__helper__/mongodb.memory.test.helpers'
+import { sendEmail } from '../__helper__/email';
 
+jest.mock('../__helper__/email');
 
 beforeAll(async () => {
   connect();
@@ -29,6 +31,9 @@ describe('GET /api/v1/rentals', () => {
   let itemrentedid = '';
 describe('POST /api/v1/rentals', () => {
     it('responds with a 201 status and the created rental', async () => {
+
+      (sendEmail as jest.Mock).mockResolvedValue(jest.fn());
+
       const itemResponse = await request(app)
         .post('/api/v1/items')
         .set('Accept', 'application/json')
@@ -44,15 +49,17 @@ describe('POST /api/v1/rentals', () => {
         .set('Accept', 'application/json')
         .send({
           itemId,
-          studentEmail: 'test@example.com',
+          studentEmail: 'flausson@normandiewebschool.fr',
           startDate: new Date('2023-12-01'),
           endDate: new Date('2023-12-10'),
         });
+
+        expect(sendEmail).toHaveBeenCalledWith('flausson@normandiewebschool.fr', expect.any(String), expect.any(String));
         id = response.body._id
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('_id');
       expect(response.body.itemId).toBe(itemId);
-      expect(response.body.studentEmail).toBe('test@example.com');
+      expect(response.body.studentEmail).toBe('flausson@normandiewebschool.fr');
       expect(response.body.startDate).toBe('2023-12-01T00:00:00.000Z');
       expect(response.body.endDate).toBe('2023-12-10T00:00:00.000Z');
   
@@ -67,7 +74,7 @@ describe('POST /api/v1/rentals', () => {
         .set('Accept', 'application/json')
         .send({
           itemId: 'zeoiezfjezgjfezjlk',
-          studentEmail: 'test@example.com',
+          studentEmail: 'flausson@normandiewebschool.fr',
           startDate: new Date('2023-12-01'),
           endDate: new Date('2023-12-10'),
         });
@@ -81,7 +88,7 @@ describe('POST /api/v1/rentals', () => {
         .set('Accept', 'application/json')
         .send({
           itemId: '6547b4673191de74c9df99ae',
-          studentEmail: 'test@example.com',
+          studentEmail: 'flausson@normandiewebschool.fr',
           startDate: new Date('2023-12-01'),
           endDate: new Date('2023-12-10'),
         });
@@ -113,7 +120,7 @@ describe('POST /api/v1/rentals', () => {
         .set('Accept', 'application/json')
         .send({
           itemId: itemGoodResponse.body._id,
-          studentEmail: 'test@example.com',
+          studentEmail: 'flausson@normandiewebschool.fr',
           startDate: new Date('2023-12-01'),
           endDate: new Date('2023-12-10'),
         });
@@ -123,6 +130,16 @@ describe('POST /api/v1/rentals', () => {
       expect(response.body.message).toBe(`item with ID ${itemResponse.body._id} already rented`);
     });
   
+  });
+  
+  describe('REMINDER /api/v1/rentals/:id/send-reminder', () => {
+    it('responds with a 200', async () => {
+      (sendEmail as jest.Mock).mockResolvedValue(jest.fn());
+      const response = await request(app)
+        .post(`/api/v1/rentals/${id}/send-reminder`)
+        .set('Accept', 'application/json')
+        .expect(200);
+    });
   });
 
 describe('GET /api/v1/rentals/:id', () => {
@@ -187,3 +204,4 @@ describe('DELETE /api/v1/rentals/:id', () => {
   });
 
 });
+

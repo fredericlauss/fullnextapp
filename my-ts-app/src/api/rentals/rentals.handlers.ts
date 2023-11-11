@@ -3,6 +3,7 @@ import { Rental, RentalWithId, Rentals } from "./rentals.model";
 import { Item, ItemWithId, Items } from "../items/items.model";
 import { ParamsWithId } from "../../interfaces/ParamsWithId";
 import { ObjectId } from "mongodb";
+import {sendEmail } from "../__helper__/email"
 
 export async function findAll(req: Request, res: Response<RentalWithId[]>, next: NextFunction) {
     try {
@@ -23,7 +24,6 @@ export async function creatOne(req: Request<{}, RentalWithId, Rental>, res: Resp
             res.status(404);
             throw new Error(`Item with id "${req.body.itemId}" not found`)
         }
-        console.log(item)
         if (item.isRented === true) {
             res.status(400);
             throw new Error(`item with ID ${req.body.itemId} already rented`);
@@ -40,9 +40,12 @@ export async function creatOne(req: Request<{}, RentalWithId, Rental>, res: Resp
 
         await Items.findByIdAndUpdate(req.body.itemId, { isRented: true, rentalId: savedRental._id });
 
+        const emailSubject = 'Nouvelle location créée';
+        const emailText = `Vous avez créé une nouvelle location pour l'item "${item.name}" du ${savedRental.startDate} au ${savedRental.endDate}`;
+        await sendEmail(savedRental.studentEmail, emailSubject, emailText);
+
         res.status(201).json(savedRental);
     } catch (error) {
-        console.log(error)
         next(error);
     }
 }
@@ -82,6 +85,35 @@ export  async function deleteOne(req: Request<ParamsWithId, {}, {}>, res: Respon
         }
 
         res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+}
+
+export  async function reminder(req: Request<ParamsWithId, {}, {}>, res: Response<{}>, next: NextFunction) {
+    try {
+        console.log("on est dans le handler")
+        const rentalId = req.params.id;
+        const rental = await Rentals.findById(rentalId);
+        const item = await Items.findById(rental?.itemId);
+
+      if (!rental) {
+        res.status(404);
+        throw new Error(`Rental with id "${rentalId}" not found`);
+      }
+
+      if (!item) {
+        res.status(404);
+        throw new Error(`Item with id "${rental?.itemId}" not found`);
+      }
+      console.log("l'item et le rental ils sont la")
+      const emailSubject = 'Rappel pour votre item';
+      const emailText = `N'oubliez pas votre item "${item.name}" le ${rental.endDate}`;
+
+      // Envoyez l'e-mail
+      await sendEmail(rental.studentEmail, emailSubject, emailText);
+
+      res.status(200).json({ message: 'Reminder sent successfully' });
     } catch (error) {
         next(error);
     }
