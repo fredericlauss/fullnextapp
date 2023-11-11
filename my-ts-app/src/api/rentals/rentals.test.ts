@@ -25,6 +25,7 @@ describe('GET /api/v1/rentals', () => {
     );
   });
 
+  let id = '';
 describe('POST /api/v1/rentals', () => {
     it('responds with a 201 status and the created rental', async () => {
       // Create an item to use in the rental
@@ -47,7 +48,7 @@ describe('POST /api/v1/rentals', () => {
           startDate: new Date('2023-12-01'),
           endDate: new Date('2023-12-10'),
         });
-  
+        id = response.body._id
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('_id');
       expect(response.body.itemId).toBe(itemId);
@@ -123,4 +124,36 @@ describe('POST /api/v1/rentals', () => {
       expect(response.body.message).toBe(`item with ID ${itemResponse.body._id} already rented`);
     });
   
+  });
+
+  describe('GET /api/v1/rentals/:id', () => {
+    it('responds with the right item', async () =>
+      request(app)
+        .get(`/api/v1/rentals/${id}`)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then ((response) => {
+          expect(response.body).toHaveProperty('itemId');
+          expect(response.body).toHaveProperty('studentEmail');
+          expect(response.body).toHaveProperty('startDate');
+          expect(response.body).toHaveProperty('endDate');
+        }),
+    );
+    it('responds with invalid Id error', (done) => {
+    request(app)
+      .get('/api/v1/rentals/zeeazeazeaze')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(422, done);
+    },
+  );
+  it('responds with not found error', (done) => {
+    request(app)
+      .get('/api/v1/rentals/6547b4673191de74c9df99ae')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(404, done);
+    },
+  );
   });
