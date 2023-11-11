@@ -7,7 +7,7 @@ const {
 async function connect() {
     try {
         await mongoose.connect(MONGODB_URI);
-        console.log("DB connected avec mail truc");
+        console.log("DB connected");
     } catch (error) {
         console.log("Could not connect to DB")
     }    
