@@ -2,16 +2,9 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-# Omit --production flag for TypeScript devDependencies
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
-  # Allow install without lockfile, so example works even without Node.js installed locally
-  else echo "Warning: Lockfile not found. It is recommended to commit lockfiles to version control." && yarn install; \
-  fi
+# Install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY . .
 
@@ -26,20 +19,16 @@ ENV NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
 # Uncomment the following line to disable telemetry at build time
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-# Note: Don't expose ports here, Compose will handle that for us
+# Add wait-for-it script
+RUN apk add --no-cache bash
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/bin/wait-for-it
+RUN chmod +x /usr/bin/wait-for-it
 
-# Build Next.js based on the preferred package manager
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then pnpm build; \
-  else yarn build; \
-  fi
+# Build the Next.js project
+RUN npm run build
 
-# Start Next.js based on the preferred package manager
-CMD \
-  if [ -f yarn.lock ]; then yarn start; \
-  elif [ -f package-lock.json ]; then npm run start; \
-  elif [ -f pnpm-lock.yaml ]; then pnpm start; \
-  else yarn start; \
-  fi
+# Clean .next directory (comment out or remove this line)
+# RUN rm -rf .next
+
+# Start Next.js with wait-for-it
+CMD /usr/bin/wait-for-it my-api:5000 -t 0 -- npm start
