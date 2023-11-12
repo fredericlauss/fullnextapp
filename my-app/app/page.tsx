@@ -3,6 +3,7 @@ import { ItemsDataTable } from "./items/items-data-table"
 import { Rentals, rentalsColumns } from "./rentals/rentals-columns"
 import { RentalsDataTable } from "./rentals/rentals-data-table"
 import { AddItem } from "@/components/addItem"
+import { Toaster } from "@/components/ui/toaster"
 
 async function getItems(): Promise<Items[]> {
     const res = await fetch('http://localhost:5000/api/v1/items', {
@@ -25,7 +26,7 @@ async function getRentas(): Promise<Rentals[]> {
 
 
 export default async function Home() {
-  const items = await getItems()
+  const items = await getItems();
   const rentals = await getRentas();
 
   return (
@@ -35,6 +36,7 @@ export default async function Home() {
         <ItemsDataTable columns={itemsColumns} data={items} />
         <h2>rentals</h2>
         <RentalsDataTable columns={rentalsColumns} data={rentals} />
+        <Toaster />
     </main>
   )
 }

@@ -20,9 +20,9 @@ import {
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/components/ui/use-toast"
 import { Input } from "@/components/ui/input"
-  import { zodResolver } from "@hookform/resolvers/zod"
-  import * as z from "zod"
-  import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { useForm } from "react-hook-form"
 
 
 
@@ -66,8 +66,6 @@ import { Input } from "@/components/ui/input"
     }
 
     return (
-        <>
-        <Toaster />
         <Sheet>
         <SheetTrigger>Add item</SheetTrigger>
         <SheetContent>
@@ -96,6 +94,5 @@ import { Input } from "@/components/ui/input"
           </SheetHeader>
         </SheetContent>
       </Sheet>
-      </>
     )
   }
