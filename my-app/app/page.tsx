@@ -5,8 +5,9 @@ import { RentalsDataTable } from "./rentals/rentals-data-table"
 import { AddItem } from "@/components/addItem"
 import { Toaster } from "@/components/ui/toaster"
 
+
 async function getItems(): Promise<Items[]> {
-    const res = await fetch('http://localhost:5000/api/v1/items', {
+    const res = await fetch('http://my-api:5000/api/v1/items', {
         next: {
           revalidate: 0
         }
@@ -15,7 +16,7 @@ async function getItems(): Promise<Items[]> {
 }
 
 async function getRentas(): Promise<Rentals[]> {
-  const res = await fetch('http://localhost:5000/api/v1/rentals', {
+  const res = await fetch('http://my-api:5000/api/v1/rentals', {
       next: {
         revalidate: 0
       }

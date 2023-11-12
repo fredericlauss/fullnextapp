@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const formSchema = z.object({
     name: z.string().min(1, {
@@ -50,7 +50,7 @@ import { useForm } from "react-hook-form"
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            const response = await fetch("http://localhost:5000/api/v1/items", {
+            const response = await fetch(`${apiUrl}/api/v1/items`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

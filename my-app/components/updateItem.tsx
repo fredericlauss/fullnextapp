@@ -25,6 +25,8 @@ import { Button } from "@/components/ui/button"
 import { Pencil } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 interface UpdateItemProps {
   id: string;
   name: string;
@@ -52,7 +54,7 @@ const formSchema = z.object({
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            const response = await fetch(`http://localhost:5000/api/v1/items/${id}`, {
+            const response = await fetch(`${apiUrl}/api/v1/items/${id}`, {
               method: "PUT",
               headers: {
                 "Content-Type": "application/json",

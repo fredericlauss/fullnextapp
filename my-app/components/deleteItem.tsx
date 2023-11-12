@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 interface DeleteItemProps {
     id: string;
   }
@@ -11,7 +13,7 @@ interface DeleteItemProps {
 
     async function DeleteItem() {
         try {
-            const response = await fetch(`http://localhost:5000/api/v1/items/${id}`, {
+            const response = await fetch(`${apiUrl}/api/v1/items/${id}`, {
               method: "DELETE",
               headers: {
                 "Content-Type": "application/json",
