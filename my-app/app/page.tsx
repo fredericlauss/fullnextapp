@@ -2,6 +2,7 @@ import { Items, itemsColumns } from "./items/items-columns"
 import { ItemsDataTable } from "./items/items-data-table"
 import { Rentals, rentalsColumns } from "./rentals/rentals-columns"
 import { RentalsDataTable } from "./rentals/rentals-data-table"
+import { AddItem } from "@/components/addItem"
 
 async function getItems(): Promise<Items[]> {
     const res = await fetch('http://localhost:5000/api/v1/items', {
@@ -30,6 +31,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <h2>Items</h2>
+        <AddItem />
         <ItemsDataTable columns={itemsColumns} data={items} />
         <h2>rentals</h2>
         <RentalsDataTable columns={rentalsColumns} data={rentals} />
