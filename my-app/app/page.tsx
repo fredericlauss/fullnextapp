@@ -3,6 +3,7 @@ import { ItemsDataTable } from "./items/items-data-table"
 import { Rentals, rentalsColumns } from "./rentals/rentals-columns"
 import { RentalsDataTable } from "./rentals/rentals-data-table"
 import { AddItem } from "@/components/addItem"
+import { AddRental } from "@/components/addRental"
 import { Toaster } from "@/components/ui/toaster"
 
 
