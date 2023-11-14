@@ -1,6 +1,7 @@
 "use client"
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetDescription,
     SheetHeader,
@@ -168,8 +169,10 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
                         </FormItem>
                     )}
                     />
-
-                <Button type="submit">Submit</Button>
+                <SheetClose asChild>
+                  <Button type="submit">Submit</Button>
+                </SheetClose>
+               
             </form>
             </Form>
             </SheetDescription>

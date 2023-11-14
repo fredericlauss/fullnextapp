@@ -1,6 +1,7 @@
 "use client"
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetDescription,
     SheetHeader,
@@ -90,7 +91,10 @@ const formSchema = z.object({
                     </FormItem>
                 )}
                 />
+                
+                <SheetClose asChild>
                 <Button type="submit">Submit</Button>
+                </SheetClose>
             </form>
             </Form>
             </SheetDescription>

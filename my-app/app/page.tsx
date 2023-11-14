@@ -13,9 +13,6 @@ export default function Home() {
   const getItems = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/v1/items', {
-        next: {
-          revalidate: 0
-        }
       })
       if (res.ok) {
         const data = await res.json();
@@ -32,9 +29,6 @@ export default function Home() {
   const getRentals = async () => {
     try {
       const res = await fetch('http://localhost:5000/api/v1/rentals', {
-        next: {
-          revalidate: 0
-        }
       })
       if (res.ok) {
         const data = await res.json();
@@ -49,17 +43,17 @@ export default function Home() {
   }
 
   useEffect(() => {
-    getItems();
     getRentals();
-  }, [items, rentals]);
+    getItems();
+  }, []);
   
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <h2>Items list</h2>
+        <h2>Items </h2>
         <AddItem />
         <ItemsDataTable columns={itemsColumns} data={items} />
-        <h2>rentals list</h2>
+        <h2>rentals</h2>
         <RentalsDataTable columns={rentalsColumns} data={rentals} />
     </main>
   )
