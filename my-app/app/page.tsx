@@ -4,24 +4,11 @@ import { ItemsDataTable } from "./items/items-data-table"
 import { Rentals, rentalsColumns } from "./rentals/rentals-columns"
 import { RentalsDataTable } from "./rentals/rentals-data-table"
 import { AddItem } from "@/components/addItem"
-import { Toaster } from "@/components/ui/toaster"
 import { useEffect, useState } from "react"
-
-
-// async function getRentas(): Promise<Rentals[]> {
-//   const res = await fetch('http://my-api:5000/api/v1/rentals', {
-//       next: {
-//         revalidate: 0
-//       }
-//     })
-//     return res.json();
-// }
-
 
 export default function Home() {
   const [items, setItems] = useState<Items[]>([]);
   const [rentals, setRentals] = useState<Rentals[]>([]);
-  // const rentals = await getRentas();
 
   const getItems = async () => {
     try {
@@ -69,12 +56,11 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <h2>Items sdfsdf</h2>
+        <h2>Items list</h2>
         <AddItem />
         <ItemsDataTable columns={itemsColumns} data={items} />
-        <h2>rentals</h2>
+        <h2>rentals list</h2>
         <RentalsDataTable columns={rentalsColumns} data={rentals} />
-        <Toaster />
     </main>
   )
 }
