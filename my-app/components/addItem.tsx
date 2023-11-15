@@ -12,13 +12,12 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Toaster } from "@/components/ui/toaster"
+import { Plus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -69,7 +68,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     return (
         <Sheet>
-        <SheetTrigger>Add item</SheetTrigger>
+        <SheetTrigger className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 border border-input bg-background hover:bg-accent hover:text-accent-foreground"><Plus className="h-4 w-4" /></SheetTrigger>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>Item to add</SheetTitle>
