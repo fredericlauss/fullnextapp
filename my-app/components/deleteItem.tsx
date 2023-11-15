@@ -6,9 +6,10 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface DeleteItemProps {
     id: string;
+    getItems: () => void;
   }
 
-  export function DeleteItem({ id }: DeleteItemProps) {
+  export function DeleteItem({ id, getItems }: DeleteItemProps) {
     const { toast } = useToast()
 
     async function DeleteItem() {
@@ -19,6 +20,7 @@ interface DeleteItemProps {
                 "Content-Type": "application/json",
               },
             });
+            getItems();
             toast({
                 title: `${response.status}`,
               })

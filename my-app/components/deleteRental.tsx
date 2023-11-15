@@ -4,11 +4,11 @@ import { useToast } from "@/components/ui/use-toast"
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-interface IdItemProps {
+interface DeleteRentalProps {
     id: string;
   }
 
-  export function DeleteRental({ id }: IdItemProps) {
+  export function DeleteRental({ id }: DeleteRentalProps) {
     const { toast } = useToast()
 
     async function DeleteRental() {

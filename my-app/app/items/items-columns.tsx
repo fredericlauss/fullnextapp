@@ -11,7 +11,11 @@ export type Items = {
   isRented: boolean
 }
 
-export const itemsColumns: ColumnDef<Items>[] = [
+interface ItemsColumnsProps {
+  getItems: () => void;
+}
+
+export const itemsColumns = ({ getItems }: ItemsColumnsProps): ColumnDef<Items>[] => [
   {
     accessorKey: "name",
     header: "Name",
@@ -24,7 +28,7 @@ export const itemsColumns: ColumnDef<Items>[] = [
 
       return (
         <div className="text-right font-medium">
-          {isRented ? "Rented" : <div><AddRental id={row.original._id}/><UpdateItem id={row.original._id} name={row.original.name}/><DeleteItem id={row.original._id}/></div>}
+          {isRented ? "Rented" : <div><AddRental id={row.original._id}/><UpdateItem getItems={getItems} id={row.original._id} name={row.original.name}/><DeleteItem getItems={getItems} id={row.original._id}/></div>}
         </div>
       );
     },

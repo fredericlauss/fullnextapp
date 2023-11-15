@@ -31,6 +31,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 interface UpdateItemProps {
   id: string;
   name: string;
+  getItems: () => void;
 }
 
 const formSchema = z.object({
@@ -41,7 +42,7 @@ const formSchema = z.object({
   rentalId: z.string().nullable(),
 })
 
-  export function UpdateItem({ id, name }: UpdateItemProps) {
+  export function UpdateItem({ id, name, getItems }: UpdateItemProps) {
     const { toast } = useToast()
     
     const form = useForm<z.infer<typeof formSchema>>({
@@ -62,6 +63,7 @@ const formSchema = z.object({
               },
               body: JSON.stringify(values),
             });
+            getItems();
             toast({
                 title: `${response.status}`,
               })

@@ -36,7 +36,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   })
 
 
-  export function AddItem() {
+  export function AddItem({ getItems }: { getItems: () => Promise<void> }) {
 
     const { toast } = useToast()
 
@@ -58,6 +58,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
               },
               body: JSON.stringify(values),
             });
+            getItems();
             toast({
                 title: `${response.status}`,
               })
