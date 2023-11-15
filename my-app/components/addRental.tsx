@@ -44,9 +44,11 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   interface AddItemProps {
     id: string;
+    getItems: () => void;
+    getRentals: () => void;
   }
 
-  export function AddRental({ id }: AddItemProps) {
+  export function AddRental({ id, getItems, getRentals }: AddItemProps) {
     const { toast } = useToast()
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -69,6 +71,8 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
               },
               body: JSON.stringify(valuesWithItemId),
             });
+            getItems();
+            getRentals();
             toast({
                 title: `${response.status}`,
               })

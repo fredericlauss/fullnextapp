@@ -12,7 +12,12 @@ export type Rentals = {
     endDate: string
 }
 
-export const rentalsColumns: ColumnDef<Rentals>[] = [
+interface ItemsColumnsProps {
+  getItems: () => void;
+  getRentals: () => void;
+}
+
+export const rentalsColumns = ({ getItems, getRentals }: ItemsColumnsProps): ColumnDef<Rentals>[] => [
   {
     accessorKey: "studentEmail",
     header: "Mail",
@@ -31,7 +36,7 @@ export const rentalsColumns: ColumnDef<Rentals>[] = [
  
       return (
       <div className="text-right font-medium">
-        <div><SendReminder id={row.original._id}/><DeleteRental id={row.original._id}/></div>
+        <div><SendReminder id={row.original._id}/><DeleteRental getRentals={getRentals} getItems={getItems} id={row.original._id}/></div>
       </div>
       )
     },

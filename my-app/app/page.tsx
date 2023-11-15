@@ -52,9 +52,9 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <h2>Items </h2>
         <AddItem getItems={getItems} />
-        <ItemsDataTable columns={itemsColumns({ getItems })} data={items} />
+        <ItemsDataTable columns={itemsColumns({ getItems, getRentals })} data={items} />
         <h2>rentals</h2>
-        <RentalsDataTable columns={rentalsColumns} data={rentals} />
+        <RentalsDataTable columns={rentalsColumns({ getItems, getRentals })} data={rentals} />
     </main>
   )
 }
