@@ -21,8 +21,6 @@ services:
     restart: always
     ports:
       - 3000:3000
-    networks:
-      - my_network
     depends_on:
       - my-api
 
@@ -39,8 +37,6 @@ services:
       restart: always
       ports:
         - 5000:5000
-      networks:
-        - my_network
       depends_on:
         - mongo
 
@@ -55,27 +51,15 @@ services:
         - .env
       ports:
         - 5050:5050
-      networks:
-        - my_network
       depends_on:
         - mongo
 
   mongo:
     container_name: mongo
     image: mongo
+    restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=userAdmin
       - MONGO_INITDB_ROOT_PASSWORD=userPassword
-    restart: always
     volumes:
       - ./data:/data/db
-    ports:
-      - "27017:27017"
-    networks:
-      - my_network
-
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-networks:
-  my_network:
-    external: true

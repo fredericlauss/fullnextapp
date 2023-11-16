@@ -29,7 +29,7 @@ export const itemsColumns = ({ getItems, getRentals }: ItemsColumnsProps): Colum
 
       return (
         <div className="text-right font-medium">
-          {isRented ? "Rented" : <div><AddRental getRentals={getRentals} getItems={getItems} id={row.original._id}/><UpdateItem getItems={getItems} id={row.original._id} name={row.original.name}/><DeleteItem getItems={getItems} id={row.original._id}/></div>}
+          {isRented ? "Rented" : <div className="flex gap-1 justify-end items-center"><AddRental getRentals={getRentals} getItems={getItems} id={row.original._id}/><UpdateItem getItems={getItems} id={row.original._id} name={row.original.name}/><DeleteItem getItems={getItems} id={row.original._id}/></div>}
         </div>
       );
     },

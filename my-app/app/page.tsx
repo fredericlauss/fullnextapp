@@ -13,6 +13,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Clock, Carrot } from "lucide-react";
+import Link from "next/link"
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
   const [items, setItems] = useState<Items[]>([]);
@@ -20,7 +24,7 @@ export default function Home() {
 
   const getItems = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/v1/items', {
+      const res = await fetch(`${apiUrl}/api/v1/items`, {
       })
       if (res.ok) {
         const data = await res.json();
@@ -36,7 +40,7 @@ export default function Home() {
 
   const getRentals = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/v1/rentals', {
+      const res = await fetch(`${apiUrl}/api/v1/rentals`, {
       })
       if (res.ok) {
         const data = await res.json();
@@ -68,43 +72,38 @@ export default function Home() {
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
-              <p>sdqsdqsd</p>
+            <p className="text-sm text-muted-foreground">Conforme à la <a className="underline" target="_blank" href="https://www.la-rache.com/presentation.html">R.A.C.H.E</a></p>
             </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Total Revenue
+                      Total Items
                     </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                    </svg>
+                    <Carrot />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
-                    <p className="text-xs text-muted-foreground">
-                      +20.1% from last month
-                    </p>
+                    <div className="text-2xl font-bold">{items.length}</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Pending Rentals
+                    </CardTitle>
+                    <Clock />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{rentals.length}</div>
                   </CardContent>
                 </Card>
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-2">
-                  <CardHeader>
-                    <CardTitle>Items</CardTitle>
-                    <CardDescription>
-                      <AddItem getItems={getItems} />
-                    </CardDescription>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle>Items</CardTitle>
+                  <AddItem getItems={getItems} />
                   </CardHeader>
                   <CardContent>
                     <ItemsDataTable columns={itemsColumns({ getItems, getRentals })} data={items} />

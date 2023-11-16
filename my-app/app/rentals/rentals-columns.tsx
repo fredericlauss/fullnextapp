@@ -36,7 +36,7 @@ export const rentalsColumns = ({ getItems, getRentals }: ItemsColumnsProps): Col
  
       return (
       <div className="text-right font-medium">
-        <div><SendReminder id={row.original._id}/><DeleteRental getRentals={getRentals} getItems={getItems} id={row.original._id}/></div>
+        <div className="flex gap-1 justify-end items-center"><SendReminder id={row.original._id}/><DeleteRental getRentals={getRentals} getItems={getItems} id={row.original._id}/></div>
       </div>
       )
     },

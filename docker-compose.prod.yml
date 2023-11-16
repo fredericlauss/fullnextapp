@@ -44,9 +44,6 @@ services:
     container_name: mongo
     image: mongo
     restart: always
-    secrets:
-      - db-username
-      - db-password
     environment:
       - MONGO_INITDB_ROOT_USERNAME=userAdmin
       - MONGO_INITDB_ROOT_PASSWORD=userPassword
@@ -54,8 +51,3 @@ services:
       - ./data:/data/db
     command: mongod --quiet --logpath /dev/null 
     
-secrets:
-  db-username:
-    file: ./db-username.txt
-  db-password:
-    file: ./db-password.txt
