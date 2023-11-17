@@ -23,12 +23,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push api
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: ./my-ts-app
           push: true
           tags: ghcr.io/${{ github.repository }}-api:${{ github.ref_name }}
+          file: ./my-ts-app/Dockerfile.prod
+
+      - name: Build and push app
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: ./my-app
+          push: true
+          tags: ghcr.io/${{ github.repository }}-app:${{ github.ref_name }}
           file: ./my-ts-app/Dockerfile.prod
 
   test:
@@ -52,4 +60,6 @@ jobs:
       - uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
-      - run: ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} "ls -lh"
+      - run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} "\
+          sudo docker compose -f docker-compose.prod.vps up -d --pull always"

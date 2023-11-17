@@ -3,9 +3,7 @@ version: '3'
 services:
   my-app:
     container_name: my-app
-    build:
-      context: ./my-app
-      dockerfile: Dockerfile.dev
+    image: ghcr.io/fredericlauss/fullnextapp-app:main
 
     # Set environment variables directly in the docker-compose file
     environment:
@@ -15,9 +13,6 @@ services:
     # Set envrionment variables based on the .env file
     env_file:
       - .env
-    volumes:
-      - ./my-app/src:/app/src
-      - ./my-app/public:/app/public
     restart: always
     ports:
       - 3000:3000
@@ -27,7 +22,8 @@ services:
   # Add more containers below (nginx, postgres, etc.)
   my-api:
       container_name: my-api
-      image: ghcr.io/username/my-next-website:latest
+      image: ghcr.io/fredericlauss/fullnextapp-api:main
+
       # Set envrionment variables based on the .env file
       env_file:
         - .env
