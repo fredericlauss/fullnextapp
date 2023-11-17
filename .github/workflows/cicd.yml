@@ -27,9 +27,9 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: ./my-ts-app
-          dockerfile: Dockerfile.prod
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+          file: ./my-ts-app/Dockerfile.prod
 
   test:
     if: github.ref == 'refs/heads/main'
