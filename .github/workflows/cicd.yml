@@ -64,4 +64,4 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} "\
           cd fullnextapp && \
           git pull && \
-          sudo docker compose -f docker-compose.prod.vps up -d --pull always"
+          sudo docker compose -f docker-compose.vps.yml up -d --pull always"
