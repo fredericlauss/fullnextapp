@@ -37,6 +37,8 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
+      - name: Change to API directory
+        run: cd my-ts-app
       - name: Run Tests
         run: |
           npm install 
