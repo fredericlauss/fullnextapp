@@ -15,9 +15,6 @@ services:
     # Set envrionment variables based on the .env file
     env_file:
       - .env
-    volumes:
-      - ./my-app/src:/app/src
-      - ./my-app/public:/app/public
     restart: always
     ports:
       - 3000:3000
