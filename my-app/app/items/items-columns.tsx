@@ -11,12 +11,21 @@ export type Items = {
   isRented: boolean
 }
 
+export type Students = {
+  id: number
+  nom: string
+  prenom: string
+  mail: string
+}
+
 interface ItemsColumnsProps {
   getItems: () => void;
   getRentals: () => void;
+  getStudents: () => void;
+  student: Students[];
 }
 
-export const itemsColumns = ({ getItems, getRentals }: ItemsColumnsProps): ColumnDef<Items>[] => [
+export const itemsColumns = ({ getItems, getRentals, getStudents, student }: ItemsColumnsProps): ColumnDef<Items>[] => [
   {
     accessorKey: "name",
     header: "Name",
@@ -29,7 +38,7 @@ export const itemsColumns = ({ getItems, getRentals }: ItemsColumnsProps): Colum
 
       return (
         <div className="text-right font-medium">
-          {isRented ? "Rented" : <div className="flex gap-1 justify-end items-center"><AddRental getRentals={getRentals} getItems={getItems} id={row.original._id}/><UpdateItem getItems={getItems} id={row.original._id} name={row.original.name}/><DeleteItem getItems={getItems} id={row.original._id}/></div>}
+          {isRented ? "Rented" : <div className="flex gap-1 justify-end items-center"><AddRental student={student} getStudents={getStudents} getRentals={getRentals} getItems={getItems} id={row.original._id}/><UpdateItem getItems={getItems} id={row.original._id} name={row.original.name}/><DeleteItem getItems={getItems} id={row.original._id}/></div>}
         </div>
       );
     },

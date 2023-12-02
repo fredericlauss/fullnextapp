@@ -18,9 +18,42 @@ import Link from "next/link"
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
+export type Students = {
+  id: number
+  nom: string
+  prenom: string
+  mail: string
+}
+
 export default function Home() {
   const [items, setItems] = useState<Items[]>([]);
   const [rentals, setRentals] = useState<Rentals[]>([]);
+  const [student, setStudent] = useState<Students[]>([]);
+
+  // const getStudents = async () => {
+  //   try {
+  //     const res = await fetch(`http://vps-a47222b1.vps.ovh.net:4242/student`, {
+  //       headers: {
+  //         'Origin': 'http://vps-a6ce17b4.vps.ovh.net:3000/',
+  //       },
+  //     })
+  //     if (res.ok) {
+  //       const data = await res.json();
+  //       const rentals = data;
+  //       if (rentals) {
+  //         setStudent(rentals);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const getStudents = async () => {
+    const student = [{"id":1,"nom":"Hellscream","prenom":"Garrosh","mail":"ghellscream@normandiewebschool.fr"},{"id":2,"nom":"Hellscream","prenom":"Jaina","mail":"jhellscream@normandiewebschool.fr"},{"id":3,"nom":"Hellscream","prenom":"Falstad","mail":"fhellscream@normandiewebschool.fr"},{"id":4,"nom":"Proudmoore","prenom":"Garrosh","mail":"gproudmoore@normandiewebschool.fr"},{"id":5,"nom":"Proudmoore","prenom":"Jaina","mail":"jproudmoore@normandiewebschool.fr"},{"id":6,"nom":"Proudmoore","prenom":"Falstad","mail":"fproudmoore@normandiewebschool.fr"},{"id":7,"nom":"Wildhammer","prenom":"Garrosh","mail":"gwildhammer@normandiewebschool.fr"},{"id":8,"nom":"Wildhammer","prenom":"Jaina","mail":"jwildhammer@normandiewebschool.fr"},{"id":9,"nom":"Wildhammer","prenom":"Falstad","mail":"fwildhammer@normandiewebschool.fr"}]
+    setStudent(student)
+  }
+
 
   const getItems = async () => {
     try {
@@ -57,6 +90,7 @@ export default function Home() {
   useEffect(() => {
     getRentals();
     getItems();
+    getStudents();
   }, []);
   
 
@@ -70,7 +104,7 @@ export default function Home() {
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            <h2 className="text-3xl font-bold tracking-tight">Dashboard de m</h2>
             <div className="flex items-center space-x-2">
             <p className="text-sm text-muted-foreground">Conforme à la <a className="underline" target="_blank" href="https://www.la-rache.com">R.A.C.H.E</a></p>
             </div>
@@ -106,7 +140,7 @@ export default function Home() {
                   <AddItem getItems={getItems} />
                   </CardHeader>
                   <CardContent>
-                    <ItemsDataTable columns={itemsColumns({ getItems, getRentals })} data={items} />
+                    <ItemsDataTable columns={itemsColumns({ getItems, getRentals, getStudents, student })} data={items} />
                   </CardContent>
                 </Card>
                 <Card className="col-span-5">

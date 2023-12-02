@@ -25,14 +25,23 @@ import * as z from "zod"
 import { useForm } from "react-hook-form"
 import * as React from "react"
 import { Calendar as CalendarIcon } from "lucide-react"
- 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
-  PopoverContent,
+  PopoverContent, 
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useEffect, useState } from "react"
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -42,13 +51,22 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     endDate: z.string().datetime(),
   })
 
+  export type Students = {
+    id: number
+    nom: string
+    prenom: string
+    mail: string
+  }
+
   interface AddItemProps {
     id: string;
     getItems: () => void;
     getRentals: () => void;
+    getStudents: () => void;
+    student: Students[];
   }
 
-  export function AddRental({ id, getItems, getRentals }: AddItemProps) {
+  export function AddRental({ id, getItems, getRentals, getStudents, student }: AddItemProps) {
     const { toast } = useToast()
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -73,12 +91,14 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
             });
             getItems();
             getRentals();
+            getStudents();
             toast({
                 title: `${response.status}`,
               })
           } catch (error) {
             console.error("Create error:", error);
           }
+          console.log(student)
     }
 
     return (
@@ -95,15 +115,29 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
                 name="studentEmail"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>student e-mail</FormLabel>
+                    {/* <FormLabel>student e-mail</FormLabel>
                     <FormControl>
                         <Input type="email" placeholder="john.doe@gmail.com" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage /> */}
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select a student" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Students</SelectLabel>
+                          {student.map((student) => (
+                            <SelectItem value={student.mail.toString()}>
+                              {`${student.nom} ${student.prenom}`}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     </FormItem>
                 )}
                 />
-
         <FormField
           control={form.control}
           name="startDate"
