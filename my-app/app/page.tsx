@@ -30,28 +30,21 @@ export default function Home() {
   const [rentals, setRentals] = useState<Rentals[]>([]);
   const [student, setStudent] = useState<Students[]>([]);
 
-  // const getStudents = async () => {
-  //   try {
-  //     const res = await fetch(`http://vps-a47222b1.vps.ovh.net:4242/student`, {
-  //       headers: {
-  //         'Origin': 'http://vps-a6ce17b4.vps.ovh.net:3000/',
-  //       },
-  //     })
-  //     if (res.ok) {
-  //       const data = await res.json();
-  //       const rentals = data;
-  //       if (rentals) {
-  //         setStudent(rentals);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   const getStudents = async () => {
-    const student = [{"id":1,"nom":"Hellscream","prenom":"Garrosh","mail":"ghellscream@normandiewebschool.fr"},{"id":2,"nom":"Hellscream","prenom":"Jaina","mail":"jhellscream@normandiewebschool.fr"},{"id":3,"nom":"Hellscream","prenom":"Falstad","mail":"fhellscream@normandiewebschool.fr"},{"id":4,"nom":"Proudmoore","prenom":"Garrosh","mail":"gproudmoore@normandiewebschool.fr"},{"id":5,"nom":"Proudmoore","prenom":"Jaina","mail":"jproudmoore@normandiewebschool.fr"},{"id":6,"nom":"Proudmoore","prenom":"Falstad","mail":"fproudmoore@normandiewebschool.fr"},{"id":7,"nom":"Wildhammer","prenom":"Garrosh","mail":"gwildhammer@normandiewebschool.fr"},{"id":8,"nom":"Wildhammer","prenom":"Jaina","mail":"jwildhammer@normandiewebschool.fr"},{"id":9,"nom":"Wildhammer","prenom":"Falstad","mail":"fwildhammer@normandiewebschool.fr"}]
-    setStudent(student)
+    try {
+      const res = await fetch(`${apiUrl}/api/v1/students`);
+      if (res.ok) {
+        const data = await res.json();
+        const students = data;
+        if (students) {
+          setStudent(students);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      // const student = [{"id":1,"nom":"Hellscream","prenom":"Garrosh","mail":"ghellscream@normandiewebschool.fr"},{"id":2,"nom":"Hellscream","prenom":"Jaina","mail":"jhellscream@normandiewebschool.fr"},{"id":3,"nom":"Hellscream","prenom":"Falstad","mail":"fhellscream@normandiewebschool.fr"},{"id":4,"nom":"Proudmoore","prenom":"Garrosh","mail":"gproudmoore@normandiewebschool.fr"},{"id":5,"nom":"Proudmoore","prenom":"Jaina","mail":"jproudmoore@normandiewebschool.fr"},{"id":6,"nom":"Proudmoore","prenom":"Falstad","mail":"fproudmoore@normandiewebschool.fr"},{"id":7,"nom":"Wildhammer","prenom":"Garrosh","mail":"gwildhammer@normandiewebschool.fr"},{"id":8,"nom":"Wildhammer","prenom":"Jaina","mail":"jwildhammer@normandiewebschool.fr"},{"id":9,"nom":"Wildhammer","prenom":"Falstad","mail":"fwildhammer@normandiewebschool.fr"}]
+      // setStudent(student)
+    }
   }
 
 
@@ -96,7 +89,7 @@ export default function Home() {
 
   return (
     <main className="">
-        <div className="hidden flex-col md:flex">
+        <div className="flex-col md:flex">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
             <h1>NWS - rent app</h1>
@@ -104,7 +97,7 @@ export default function Home() {
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard de m</h2>
+            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
             <p className="text-sm text-muted-foreground">Conforme à la <a className="underline" target="_blank" href="https://www.la-rache.com">R.A.C.H.E</a></p>
             </div>
@@ -133,8 +126,8 @@ export default function Home() {
                   </CardContent>
                 </Card>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-2">
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-7 lg:grid-cols-7">
+                <Card className="col-span-1 md:col-span-2">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle>Items</CardTitle>
                   <AddItem getItems={getItems} />
@@ -143,7 +136,7 @@ export default function Home() {
                     <ItemsDataTable columns={itemsColumns({ getItems, getRentals, getStudents, student })} data={items} />
                   </CardContent>
                 </Card>
-                <Card className="col-span-5">
+                <Card className="col-span-1 md:col-span-5">
                   <CardHeader>
                     <CardTitle>Rentals</CardTitle>
                   </CardHeader>
